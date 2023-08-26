@@ -258,14 +258,21 @@ class NotesConvertor:
         if not config.yanom_globals.is_silent:
             with alive_bar(len(notes_to_check), bar='blocks') as bar:
                 for note in notes_to_check:
-                    self._nsx_attachment_checks(note, notes_to_check, bar)
+                    self._nsx_attachment_checks(note, notes_to_check, self.conversion_settings.skip_attachment_checks, bar)
             return
 
         for note in notes_to_check:
-            self._nsx_attachment_checks(note, notes_to_check)
+            self._nsx_attachment_checks(note, notes_to_check, self.conversion_settings.skip_attachment_checks)
 
-    def _nsx_attachment_checks(self, note, notes_to_check, bar=None):
-        content = note.read_text(encoding='utf-8')
+    def _nsx_attachment_checks(self, note, notes_to_check, skip_checks, bar=None):
+        error_mode = 'ignore' if skip_checks else 'strict'
+        content = None
+        try:
+            content = note.read_text(encoding='utf-8', errors=error_mode)
+        except UnicodeDecodeError:
+            print(f"\nNote {note} has error. Try again with loose error checking if you like\n")
+            exit(1)
+
         all_attachments_paths = find_local_file_links_in_content(self.conversion_settings.export_format,
                                                                  content)
 

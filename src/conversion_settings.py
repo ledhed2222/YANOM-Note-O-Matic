@@ -387,6 +387,7 @@ class ConversionSettings:
         self.chart_image = True
         self.chart_csv = True
         self.chart_data_table = True
+        self.skip_attachment_checks = False
         self._allow_spaces_in_file_names = True
         self._allow_unicode_in_file_names = True
         self._allow_uppercase_in_file_names = True

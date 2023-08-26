@@ -137,8 +137,13 @@ dmypy.json
 /src/normal.log.4
 /src/normal.log.5
 
-/src/data/notes/
-/src/data/test.nsx
 /cov_html/
 /scripts/mac-osx-build/secrets.py
 /src/logs/
+
+# Keep the src/data folder but none of its contents
+/src/data/
+!/src/data/.keep
+
+# Submodules
+/PyInquirer/

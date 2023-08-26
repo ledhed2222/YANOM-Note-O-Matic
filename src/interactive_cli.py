@@ -234,6 +234,8 @@ class StartUpCommandLineInterface(InquireCommandLineInterface):
             self._ask_and_set_space_replacement_character()
             self._ask_and_set_maximum_filename_length()
 
+        self._ask_about_attachment_check_level()
+
     def _ask_nimbus_conversion_options(self):
         self._ask_and_set_conversion_quick_setting()
         self._ask_and_set_source()
@@ -437,6 +439,21 @@ class StartUpCommandLineInterface(InquireCommandLineInterface):
 
         if 'First column of table as header column' in answers['table_options']:
             self._cli_conversion_settings.first_column_as_header = True
+
+    def _ask_about_attachment_check_level(self):
+        questions = [
+            {
+                'type': 'confirm',
+                'name': '_should_skip_checks',
+                'message': 'Do you wish to skip attachment checks? Only recommended if a previous run failed',
+                'default': False,
+            },
+        ]
+
+        answers = prompt(questions, style=self.style)
+        _exit_if_keyboard_interrupt(answers)
+
+        self._cli_conversion_settings.skip_attachment_checks = answers['_should_skip_checks']
 
     def _ask_and_set_chart_options(self):
         questions = [
